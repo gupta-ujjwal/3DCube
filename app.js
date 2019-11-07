@@ -82,7 +82,7 @@ function rotateCubeX() {
     for( var i = 0; i < vertices.length; i++ ) {
         var vertice = vertices[i];
         var rotated = vertice.rotateX(angle);
-        var projected = rotated.project(400,200,128,3.5);
+        var projected = rotated.project(400,200,100,3.5);
         t.push(projected);
     }
     
@@ -98,7 +98,7 @@ function rotateCubeY() {
     for( var i = 0; i < vertices.length; i++ ) {
         var vertice = vertices[i];
         var rotated = vertice.rotateY(angle);
-        var projected = rotated.project(400,200,128,3.5);
+        var projected = rotated.project(400,200,100,3.5);
         t.push(projected);
     }
     
@@ -115,7 +115,7 @@ function rotateCubeZ() {
     for( var i = 0; i < vertices.length; i++ ) {
         var vertice = vertices[i];
         var rotated = vertice.rotateZ(angle);
-        var projected = rotated.project(400,200,128,3.5);
+        var projected = rotated.project(400,200,100,3.5);
         t.push(projected);
     }
     
@@ -130,7 +130,7 @@ function rotateAllD() {
     for( var i = 0; i < vertices.length; i++ ) {
         var v = vertices[i];
         var r = v.rotateX(angle).rotateY(angle).rotateZ(angle);
-        var p = r.project(400,200,128,3.5);
+        var p = r.project(400,200,100,3.5);
         t.push(p)
     }
 
@@ -142,31 +142,45 @@ var vertices = [new Point3D(-1,1,-1), new Point3D(1,1,-1), new Point3D(1,-1,-1),
 
 var faces = [[0,1,2,3],[1,5,6,2],[5,4,7,6],[4,0,3,7],[0,4,5,1],[3,2,6,7]]
 
-var angle =0;
+var angle = 45;
 var dacc=0.05,speed ;
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
-initCube()
-
+var t = null;
+initCube();
 
 function rotateCubeXM() {
     fr = 5
-    for(let i = 0;i<1000;i++) {
-        setTimeout(rotateCubeX,i*fr);
+    if (t!==null) {
+        clearTimeout(t);
+        t = null;
+        // console.log('Found');
+    }
+    for(var i = 0;i<150;i++,fr+=dacc) {
+        t = setTimeout(rotateCubeX,i*fr);
     }
 }
 
 function rotateCubeYM() {
+    if (t) {
+        clearTimeout(t);
+        t = null;
+    }
+    fr = 5;
     for(let i = 0;i<200;i++,fr+=dacc) {
-        setTimeout(rotateCubeY,i*fr);
+        t = setTimeout(rotateCubeY,i*fr);
     }
 }
 
 function rotateCubeZM() {
-    fr = 5
-    for(let i = 0;i<200;i++,fr+=0.05) {
-        setTimeout(rotateCubeZ,i*fr);
+    if (t) {
+        clearTimeout(t);
+        t = null;
+    }
+    fr = 5;
+    for(let i = 0;i<200;i++,fr+=dacc) {
+        t = setTimeout(rotateCubeZ,i*fr);
     }
 }
 
