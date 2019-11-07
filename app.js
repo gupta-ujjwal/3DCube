@@ -195,8 +195,8 @@ function mouseMoved(ev) {
 var count = 0;
 var damp = 0.01;
 var onDragEnd = function() {  
-    fr = 20 
-    for(let i = 0;i<30;i++,fr+=1) {
+    fr = 5; 
+    for(let i = 0;i<50;i++,fr+=1) {
         setTimeout(render,i*fr);
     }
     console.log("Execution Complete!");
