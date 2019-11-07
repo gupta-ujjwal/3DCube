@@ -35,11 +35,12 @@
     </style>
 </head>
 <body>
-    <canvas id="myCanvas"></canvas>
+    <canvas onmousemove="mouseMoved(event)" onmouseleave="onDragEnd()" id="myCanvas"></canvas>
     <div class="RottateButtons">
         <button onclick="rotateCubeXM()">RotateX</button>
         <button onclick="rotateCubeYM()">RotateY</button>
         <button onclick="rotateCubeZM()">RotateZ</button>
+        <button onclick="friction()">Friction</button>
     </div>
     <script src="app.js"></script>
 </body>
