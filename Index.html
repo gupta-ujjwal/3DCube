@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>3D Cube</title>
+    <style>
+        body {
+            background: #333;
+        }
+        canvas {
+            border:1px solid #d3d3d3;
+            background-color: #f1f1f1;
+            margin-top: 25vh;
+            margin-left: 35vw;  
+            width: 400px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas"></canvas>
+    <div class="RottateButtons">
+        <button onclick="rotateCubeXM()">RotateX</button>
+        <button onclick="rotateCubeYM()">RotateY</button>
+        <button onclick="rotateCubeZM()">RotateZ</button>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
