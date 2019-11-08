@@ -12,7 +12,7 @@
         canvas {
             border:1px solid #d3d3d3;
             background-color: #f1f1f1;
-            margin-top: 20vh;
+            margin-top: 10vh;
             margin-left: 30vw;  
             width: 800px;
             height: 400px;
@@ -29,18 +29,33 @@
         }
         div {
             width: 34vw;
-            margin-left: 40vw;
+            margin-left: 36vw;
             margin-top: 5vh;
+        }
+        p {
+            color: white;
+            align-self: center;
+            width: 100vw;
+            font-size: 18px;
+        }
+        .text {
+            margin-top: 10vh;
+            margin-left: 40vw;
         }
     </style>
 </head>
 <body>
-    <canvas onmousemove="mouseMoved(event)" onmouseleave="onDragEnd()" id="myCanvas"></canvas>
+    <div class="text">
+        <p>Swipe your cusor in the canvas area to rotate the cube.</p>
+    </div>
+    <!-- <canvas onmousemove="mouseMoved(event)" onmouseleave="onLeaveCanvas()" id="myCanvas"></canvas> -->
+    <canvas onclick="friction()" onmousemove="mouseMoved(event)" onmouseleave="onLeaveCanvas()" id="myCanvas"></canvas>
     <div class="RottateButtons">
         <button onclick="rotateCubeXM()">RotateX</button>
         <button onclick="rotateCubeYM()">RotateY</button>
         <button onclick="rotateCubeZM()">RotateZ</button>
         <button onclick="friction()">Friction</button>
+        <button onclick="toggleMouse()">Toggle Mouse Movement</button>
     </div>
     <script src="app.js"></script>
 </body>

@@ -139,36 +139,66 @@ var ctx = canvas.getContext("2d");
 initCube();
 var stoppage=1;
 var fr;
+var timeoutC = null;
+var frs = []
+var flag = 1;
+
+function friction() {
+    if (frs.length > 0) {
+        for(var i =0;i<frs.length;i++){
+            console.log(timeoutC)
+            console.log(frs);
+            if (frs[i][0] == timeoutC) {
+                for(var j = i;j<frs.length;j+=3) {
+                    clearTimeout(frs[j][0]);
+                }
+            }
+        }
+    }
+    else {
+        console.log('Rem');
+    }
+}
+
 function rotateCubeXM() {
     fr = 5;
+    frs = []
     stoppage = 1;
+    if (timeoutC){
+        timeoutC = null;
+    }
     for(var i = 0;i<200;i++,fr+=dacc) {
-        setTimeout(rotateCubeX,i*fr*stoppage,1);
+        timeoutC = setTimeout(rotateCubeX,i*fr*stoppage,1);
+        frs.push([timeoutC,fr])
     }
 }
 
 function rotateCubeYM() {
     fr = 5;
     stoppage = 1;
+    frs = [];
+    if (timeoutC){
+        timeoutC = null;
+    }
     for(let i = 0;i<200;i++,fr+=dacc) {
-        setTimeout(rotateCubeY,i*fr*stoppage,1);
+        timeoutC = setTimeout(rotateCubeY,i*fr*stoppage,1);
+        frs.push([timeoutC,fr])        
     }
 }
 
 function rotateCubeZM() {
     fr = 5;
-    stoppage = 1;   
+    stoppage = 1;
+    frs = [];
+    if (timeoutC){
+        timeoutC = null;
+    }   
     for(let i = 0;i<200;i++,fr+=dacc) {
-        setTimeout(rotateCubeZ,i*fr*stoppage,1);
+        timeoutC = setTimeout(rotateCubeZ,i*fr*stoppage,1);
+        frs.push([timeoutC,fr])
     }
 }
 
-function trackMouse(e) {
-    // var x = e.clientX;
-    // var y = e.clientY;
-    // var coor = "Coordinates: (" + x + "," + y + ")";
-    // console.log(coor);
-}
 var lastMouseX = 0,
 	lastMouseY = 0;
 var rotX = 0,
@@ -182,24 +212,41 @@ var rotX = 0,
 var deltaX,deltaY
     
 function mouseMoved(ev) {
-    deltaX = ev.pageX - lastMouseX;
-    deltaY = ev.pageY - lastMouseY;
-
-    lastMouseX = ev.pageX;
-    lastMouseY = ev.pageY;
-    rotateCubeX(deltaY);
-    rotateCubeY(-deltaX);
+    if (flag) {
+        deltaX = ev.pageX - lastMouseX;
+        deltaY = ev.pageY - lastMouseY;
+    
+        lastMouseX = ev.pageX;
+        lastMouseY = ev.pageY;
+        rotateCubeX(deltaY*0.2);
+        rotateCubeY(-deltaX*0.2);
+    }
     // console.log(deltaX,deltaY)
 }
 
+function toggleMouse() {
+    if (flag) {
+        flag = 0;
+    }
+    else {
+        flag = 1;
+    }
+}
+
+
 var count = 0;
 var damp = 0.01;
-var onDragEnd = function() {  
-    fr = 5; 
-    for(let i = 0;i<50;i++,fr+=1) {
-        setTimeout(render,i*fr);
+
+function onLeaveCanvas() {
+    if(flag) {
+        fr = 5; 
+        frs = []
+        for(let i = 0;i<50;i++,fr+=1) {
+            timeoutC = setTimeout(render,i*fr);
+            frs.push([timeoutC,fr])        
+        }
+        console.log("Execution Complete!");
     }
-    console.log("Execution Complete!");
 }
 
 function render() {
@@ -209,14 +256,5 @@ function render() {
 }
 
 function initCube() {
-    var t = new Array();
-
-    for( var i = 0; i < vertices.length; i++ ) {
-        var vertice = vertices[i];
-        var rotated = vertice.rotateY(140);
-        var projected = rotated.project(400,200,100,3.5);
-        t.push(projected);
-        vertices[i] = rotated;
-    }
-    create3DSquare(t);
+    rotateCubeYM();
 }
