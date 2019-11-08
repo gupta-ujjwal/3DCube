@@ -24,7 +24,7 @@
             font-size: 22px;
             color: #fff;
             border: 1px solid #fff;
-            box-shadow: 3px 3px 3px #222;
+            box-shadow: 4px 4px 3px #111;
             cursor: pointer;
         }
         canvas:hover {
@@ -39,7 +39,7 @@
             color: white;
             align-self: center;
             width: 100vw;
-            font-size: 18px;
+            font-size: 20px;
         }
         .text {
             margin-top: 14vh;
@@ -53,7 +53,8 @@
 </head>
 <body>
     <div class="text">
-        <p>Swipe your cusor in the canvas area to rotate the cube.</p>
+        <p>Swipe your cusor in the canvas area to rotate the cube.</p> 
+        <p style="margin-left:-11vw;"> Click inside the canvas to produce Friction (Recommended-Toggle mouse before clicking inside canvas).</p>
     </div>
     <!-- <canvas onmousemove="mouseMoved(event)" onmouseleave="onLeaveCanvas()" id="myCanvas"></canvas> -->
     <canvas onclick="friction()" onmousemove="mouseMoved(event)" onmouseleave="onLeaveCanvas()" id="myCanvas"></canvas>

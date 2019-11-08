@@ -49,20 +49,11 @@ function line(context, p1,p2) {
     context.stroke();   
 }
 
-function create3DSquare(verticesUpdated) {
-    ctx.clearRect(0,0,800,400);
-
-    ctx.fillStyle = "#333";
-    ctx.beginPath();
-    ctx.rect(0, 0, 800, 400);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
+function fillCube(verticesUpdated) {
     for( var i = 0; i < faces.length; i++ ) {
         var f = faces[i]
-        ctx.fillStyle = "#2a2a2a";
-        ctx.strokeStyle = "#fff";
+        ctx.fillStyle = "#222";
+        ctx.strokeStyle = "#ddd";
         ctx.beginPath()
         ctx.moveTo(verticesUpdated[f[0]].x,verticesUpdated[f[0]].y)
         ctx.lineTo(verticesUpdated[f[1]].x,verticesUpdated[f[1]].y)
@@ -70,9 +61,19 @@ function create3DSquare(verticesUpdated) {
         ctx.lineTo(verticesUpdated[f[3]].x,verticesUpdated[f[3]].y)
         ctx.closePath();
         ctx.fill();
-        // ctx.stroke();
     }
+}
 
+function fillCanvas() {
+    ctx.fillStyle = "#333";
+    ctx.beginPath();
+    ctx.rect(0, 0, 800, 400);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+}
+
+function drawLines(verticesUpdated) {
     line(ctx, verticesUpdated[0],verticesUpdated[1]);
     line(ctx, verticesUpdated[1],verticesUpdated[2]);
     line(ctx, verticesUpdated[2],verticesUpdated[3]);
@@ -85,7 +86,9 @@ function create3DSquare(verticesUpdated) {
     line(ctx, verticesUpdated[1],verticesUpdated[5]);
     line(ctx, verticesUpdated[2],verticesUpdated[6]);
     line(ctx, verticesUpdated[3],verticesUpdated[7]);
-    // Draw nodes
+}
+
+function drawNodes(verticesUpdated) {
     for (var n=0; n<8; n++) {
         var node = verticesUpdated[n];
         ctx.beginPath();
@@ -94,9 +97,16 @@ function create3DSquare(verticesUpdated) {
     }
 }
 
+function create3DSquare(verticesUpdated) {
+    ctx.clearRect(0,0,800,400);
+    fillCanvas();
+    fillCube(verticesUpdated);
+    drawLines(verticesUpdated);
+    drawNodes(verticesUpdated)
+}
+
 function rotateCubeX(r) {
     var t = new Array();
-    // Using Perspective Prohection
     for( var i = 0; i < vertices.length; i++ ) {
         var vertice = vertices[i];
         var rotated = vertice.rotateX(r);
@@ -104,29 +114,23 @@ function rotateCubeX(r) {
         t.push(projected);
         vertices[i]=rotated;
     }
-    
     create3DSquare(t);
-    // console.log(angle.x,angle.y,angle.z);
 }
 
 function rotateCubeY(r) {
     var t = new Array();
-    // Using Perspective Prohection
     for( var i = 0; i < vertices.length; i++ ) {
         var vertice = vertices[i];
         var rotated = vertice.rotateY(r);
         var projected = rotated.project(400,200,100,3.5);
         t.push(projected);
         vertices[i] = rotated;
-    }
-    
+    }    
     create3DSquare(t);
-    // console.log(angle.x,angle.y,angle.z);
 }
 
 function rotateCubeZ() {
     var t = new Array();
-    // Using Perspective Prohection
     for( var i = 0; i < vertices.length; i++ ) {
         var vertice = vertices[i];
         var rotated = vertice.rotateZ(1);
@@ -137,33 +141,15 @@ function rotateCubeZ() {
     create3DSquare(t);
 }
 
-
-var vertices = [new Point3D(-1,1,-1), new Point3D(1,1,-1), new Point3D(1,-1,-1), new Point3D(-1,-1,-1),
-    new Point3D(-1,1,1), new Point3D(1,1,1), new Point3D(1,-1,1), new Point3D(-1,-1,1)];
-
-var faces = [[0,1,2,3],[1,5,6,2],[5,4,7,6],[4,0,3,7],[0,4,5,1],[3,2,6,7]]
-
-var angle = 1;
-var dacc=0.05,speed ;
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-
-initCube();
-var stoppage=1;
-var fr;
-var timeoutC = null;
-var frs = []
-var flag = 1;
-
 function friction() {
     if (frs.length > 0) {
         for(var i =0;i<frs.length;i++){
-            console.log(timeoutC)
-            console.log(frs);
+            // console.log(timeoutC)
+            // console.log(frs);
             if (frs[i][0] == timeoutC) {
-                for(var j = i;j<frs.length;j+=3) {
-                    clearTimeout(frs[j][0]);
-                }
+                console.log('Friction')
+                clearTimeout(frs[i][0]);
+                setTimeout(rotateCubeZ,frs[i][1]+1)
             }
         }
     }
@@ -181,48 +167,34 @@ function rotateCubeXM() {
     }
     for(var i = 0;i<200;i++,fr+=dacc) {
         timeoutC = setTimeout(rotateCubeX,i*fr*stoppage,1);
-        frs.push([timeoutC,fr])
+        frs.push([timeoutC,fr*i])
     }
 }
 
 function rotateCubeYM() {
     fr = 5;
-    stoppage = 1;
     frs = [];
     if (timeoutC){
         timeoutC = null;
     }
     for(let i = 0;i<200;i++,fr+=dacc) {
         timeoutC = setTimeout(rotateCubeY,i*fr*stoppage,1);
-        frs.push([timeoutC,fr])        
+        frs.push([timeoutC,fr*i])        
     }
 }
 
 function rotateCubeZM() {
     fr = 5;
-    stoppage = 1;
     frs = [];
     if (timeoutC){
         timeoutC = null;
     }   
     for(let i = 0;i<200;i++,fr+=dacc) {
         timeoutC = setTimeout(rotateCubeZ,i*fr*stoppage,1);
-        frs.push([timeoutC,fr])
+        frs.push([timeoutC,fr*i])
     }
 }
 
-var lastMouseX = 0,
-	lastMouseY = 0;
-var rotX = 0,
-    rotY = 0;
-    
-// canvas.mousedown =  function(ev) {
-// 	lastMouseX = ev.clientX;
-// 	lastMouseY = ev.clientY;
-// 	canvas"mousemove", mouseMoved);
-// });
-var deltaX,deltaY
-    
 function mouseMoved(ev) {
     if (flag) {
         deltaX = ev.pageX - lastMouseX;
@@ -235,7 +207,6 @@ function mouseMoved(ev) {
     }
     // console.log(deltaX,deltaY)
 }
-
 function toggleMouse() {
     if (flag) {
         flag = 0;
@@ -244,18 +215,13 @@ function toggleMouse() {
         flag = 1;
     }
 }
-
-
-var count = 0;
-var damp = 0.01;
-
 function onLeaveCanvas() {
     if(flag) {
         fr = 5; 
         frs = []
         for(let i = 0;i<50;i++,fr+=1) {
             timeoutC = setTimeout(render,i*fr);
-            frs.push([timeoutC,fr])        
+            frs.push([timeoutC,fr*i])        
         }
         console.log("Execution Complete!");
     }
@@ -267,6 +233,26 @@ function render() {
     damp = damp/1.01;
 }
 
-function initCube() {
-    rotateCubeYM();
-}
+var vertices = [new Point3D(-1,1,-1), new Point3D(1,1,-1), new Point3D(1,-1,-1), new Point3D(-1,-1,-1),
+    new Point3D(-1,1,1), new Point3D(1,1,1), new Point3D(1,-1,1), new Point3D(-1,-1,1)];
+
+var faces = [[0,1,2,3],[1,5,6,2],[5,4,7,6],[4,0,3,7],[0,4,5,1],[3,2,6,7]]
+
+var angle = 1;
+var dacc=0.05,speed ;
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var stoppage=1;
+var fr;
+var timeoutC = null;
+var frs = []
+var flag = 1;
+var lastMouseX = 0,
+	lastMouseY = 0;
+var rotX = 0,
+    rotY = 0;
+var deltaX,deltaY
+var count = 0;
+var damp = 0.01;
+
+rotateCubeYM();
