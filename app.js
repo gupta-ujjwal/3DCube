@@ -43,36 +43,40 @@ function Point3D(x,y,z) {
 }
 
 function line(context, p1,p2) {
-    
+    context.beginPath();
+    context.moveTo(p1.x, p1.y);
+    context.lineTo(p2.x, p2.y);
+    context.stroke();   
 }
 
 function create3DSquare(verticesUpdated) {
     ctx.clearRect(0,0,600,300);
-    // line(ctx, verticesUpdated[0],verticesUpdated[1]);
-    // line(ctx, verticesUpdated[1],verticesUpdated[2]);
-    // line(ctx, verticesUpdated[2],verticesUpdated[3]);
-    // line(ctx, verticesUpdated[3],verticesUpdated[0]);
-    // line(ctx, verticesUpdated[4],verticesUpdated[5]);
-    // line(ctx, verticesUpdated[5],verticesUpdated[6]);
-    // line(ctx, verticesUpdated[6],verticesUpdated[7]);
-    // line(ctx, verticesUpdated[7],verticesUpdated[4]);
-    // line(ctx, verticesUpdated[0],verticesUpdated[4]);
-    // line(ctx, verticesUpdated[1],verticesUpdated[5]);
-    // line(ctx, verticesUpdated[2],verticesUpdated[6]);
-    // line(ctx, verticesUpdated[3],verticesUpdated[7]);
     for( var i = 0; i < faces.length; i++ ) {
         var f = faces[i]
-        ctx.fillStyle = "#006BAD";
-        ctx.strokeStyle = "#005BAD";
+        ctx.fillStyle = "#0090F0";
+        ctx.strokeStyle = "#007BAD";
         ctx.beginPath()
         ctx.moveTo(verticesUpdated[f[0]].x,verticesUpdated[f[0]].y)
         ctx.lineTo(verticesUpdated[f[1]].x,verticesUpdated[f[1]].y)
         ctx.lineTo(verticesUpdated[f[2]].x,verticesUpdated[f[2]].y)
         ctx.lineTo(verticesUpdated[f[3]].x,verticesUpdated[f[3]].y)
-        // ctx.closePath();
-        // ctx.fill();
-        ctx.stroke();
+        ctx.closePath();
+        ctx.fill();
+        // ctx.stroke();
     }
+
+    line(ctx, verticesUpdated[0],verticesUpdated[1]);
+    line(ctx, verticesUpdated[1],verticesUpdated[2]);
+    line(ctx, verticesUpdated[2],verticesUpdated[3]);
+    line(ctx, verticesUpdated[3],verticesUpdated[0]);
+    line(ctx, verticesUpdated[4],verticesUpdated[5]);
+    line(ctx, verticesUpdated[5],verticesUpdated[6]);
+    line(ctx, verticesUpdated[6],verticesUpdated[7]);
+    line(ctx, verticesUpdated[7],verticesUpdated[4]);
+    line(ctx, verticesUpdated[0],verticesUpdated[4]);
+    line(ctx, verticesUpdated[1],verticesUpdated[5]);
+    line(ctx, verticesUpdated[2],verticesUpdated[6]);
+    line(ctx, verticesUpdated[3],verticesUpdated[7]);
     // Draw nodes
     for (var n=0; n<8; n++) {
         var node = verticesUpdated[n];
