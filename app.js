@@ -50,11 +50,19 @@ function line(context, p1,p2) {
 }
 
 function create3DSquare(verticesUpdated) {
-    ctx.clearRect(0,0,600,300);
+    ctx.clearRect(0,0,800,400);
+
+    ctx.fillStyle = "#333";
+    ctx.beginPath();
+    ctx.rect(0, 0, 800, 400);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
     for( var i = 0; i < faces.length; i++ ) {
         var f = faces[i]
-        ctx.fillStyle = "#0090F0";
-        ctx.strokeStyle = "#007BAD";
+        ctx.fillStyle = "#2a2a2a";
+        ctx.strokeStyle = "#fff";
         ctx.beginPath()
         ctx.moveTo(verticesUpdated[f[0]].x,verticesUpdated[f[0]].y)
         ctx.lineTo(verticesUpdated[f[1]].x,verticesUpdated[f[1]].y)
@@ -81,7 +89,7 @@ function create3DSquare(verticesUpdated) {
     for (var n=0; n<8; n++) {
         var node = verticesUpdated[n];
         ctx.beginPath();
-        ctx.arc(node.x, node.y, 2, 0, 2 * Math.PI);
+        ctx.arc(node.x, node.y, 1.5, 0, 2 * Math.PI);
         ctx.stroke();
     }
 }
